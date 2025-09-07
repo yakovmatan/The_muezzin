@@ -10,7 +10,7 @@ class Manager:
         self.files = ReadFiles('C:/podcasts').read_metadata_on_file()
         self.producer = produce()
 
-
+    #Posting messages to Kafka by topic
     def publish_messages(self, topic):
         log.info("start to publish")
         documents = self.files

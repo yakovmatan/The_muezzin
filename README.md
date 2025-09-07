@@ -10,7 +10,7 @@
 
 ### 2. processing
 1. Single-valued unique identifier calculation
-2. Sending parts of the document
-    All metadata information is sent to the index in elasticsearch,
-    to enable efficient searches and analysis. 
-    The actual contents of the file are stored in monogodb.
+2. Sending parts of the document:
+    * All metadata information is sent to the index in elasticsearch,
+      to enable efficient searches and analysis. 
+    * The actual contents of the file are stored in monogodb.

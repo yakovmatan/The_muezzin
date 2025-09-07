@@ -5,11 +5,9 @@ class DalElastic:
     def __init__(self, connection: Elasticsearch):
         self.es = connection
 
-    def create_index(self, index_name: str, mapping: dict):
+    def create_index(self, index_name: str):
         if not self.es.indices.exists(index=index_name):
-            self.es.indices.create(index=index_name, mappings={
-                "properties": mapping
-            })
+            self.es.indices.create(index=index_name)
             print(f"Index {index_name} created successfully")
             self.es.indices.refresh(index=index_name)
 

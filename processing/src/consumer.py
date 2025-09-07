@@ -8,7 +8,7 @@ from processing.src.unique_identifier import get_unique_identifier
 
 class Consumer:
 
-    def __init__(self, *topics, index_name, mapping):
+    def __init__(self, *topics, index_name):
         self.index_name = index_name
         self.events = consumer(*topics)
         self.producer = produce()
@@ -16,10 +16,10 @@ class Consumer:
         self.elastic_conn = ElasticConn().get_es()
         self.dal_mongo = DalMongo(self.mongo_conn)
         self.dal_elastic = DalElastic(self.elastic_conn)
-        self.__create_index_to_elasitc(index_name, mapping)
+        self.__create_index_to_elasitc(index_name)
 
-    def __create_index_to_elasitc(self, index_name, mapping):
-        self.dal_elastic.create_index(index_name, mapping)
+    def __create_index_to_elasitc(self, index_name):
+        self.dal_elastic.create_index(index_name)
 
     @staticmethod
     def fit_document_to_elastic(document):

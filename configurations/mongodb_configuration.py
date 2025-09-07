@@ -8,7 +8,7 @@ class DbConnection:
         try:
             mongo_user = os.getenv("MONGODB_USER","admin")
             mongo_password = os.getenv("MONGODB_PASSWORD","yakov")
-            mongo_db = os.getenv("MONGODB_DATABASE","tweets")
+            mongo_db = os.getenv("MONGODB_DATABASE","the_muezzin")
             mongo_host = os.getenv("MONGODB_HOST","localhost")
             mongo_port = os.getenv("MONGODB_PORT","27017")
             auth_db = os.getenv("MONGODB_AUTH_DB","admin")

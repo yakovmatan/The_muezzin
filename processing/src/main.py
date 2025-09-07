@@ -1,5 +1,3 @@
-from pydoc_data.topics import topics
-
 from processing.src.consumer import Consumer
 
 consumer = Consumer('podcasts', index_name='podcasts')

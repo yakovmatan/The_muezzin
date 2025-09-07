@@ -3,7 +3,7 @@ import time
 from elasticsearch import Elasticsearch
 
 
-class Configuration:
+class ElasticConn:
 
     def __init__(self):
         conn = os.getenv('ES_HOST','localhost')

@@ -4,10 +4,10 @@ from logger.logger import get_logger
 
 log = get_logger()
 
-class Dal:
+class DalMongo:
 
-    def __init__(self):
-        self.connection = DbConnection()
+    def __init__(self, connection: DbConnection):
+        self.connection = connection
         self.fs = gridfs.GridFS(self.connection.db)
 
     def insert_file(self, file_path, file_id):

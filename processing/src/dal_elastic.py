@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch
 
-class Dal:
+class DalElastic:
 
     def __init__(self, connection: Elasticsearch):
         self.es = connection

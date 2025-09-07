@@ -2,11 +2,12 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY processing/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY processing /app/processing
 COPY configurations /app/configurations
+COPY logger /app/logger
 
-CMD ["python", "-m" , "src.main"]
+CMD ["python", "-m" , "processing.src.main"]

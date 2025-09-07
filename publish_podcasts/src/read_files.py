@@ -12,7 +12,7 @@ class ReadFiles:
         for subdir in self.path.iterdir():
             file = {}
             path = str(PurePosixPath(subdir))
-            file_size = subdir.stat().st_size
+            file_size = str(subdir.stat().st_size)
             file_name = subdir.name
             created_at = subdir.stat().st_ctime
             to_time = str(datetime.datetime.fromtimestamp(created_at))

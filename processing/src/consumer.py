@@ -33,7 +33,8 @@ class Consumer:
 
     def publish_messages(self):
         for i, messages in enumerate(self.events, start=1):
-            unique_id = get_unique_identifier(messages.value, i)
+            print(messages.value)
+            unique_id = get_unique_identifier(messages.value, str(i))
             doc = Consumer.fit_document_to_elastic(messages.value)
             self.dal_elastic.index_documents(self.index_name, doc, unique_id)
 

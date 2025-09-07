@@ -15,5 +15,6 @@ class Manager:
         log.info("start to publish")
         documents = self.files
         for document in documents:
+            print(document)
             send_event(self.producer,topic , document)
         log.info("finish to publish")

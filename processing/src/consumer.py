@@ -4,6 +4,7 @@ from configurations.mongodb_configuration import DbConnection
 from logger.logger_to_elasic import Logger
 from dals.dal_elastic import DalElastic
 from dals.dal_mongo import DalMongo
+from processing.src.text_extraction import TextExtraction
 from processing.src.unique_identifier import get_unique_identifier
 
 logger = Logger.get_logger()
@@ -13,6 +14,7 @@ class Consumer:
     def __init__(self, *topics, index_name, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
+        self.text_extract = TextExtraction()
         self.events = consumer(*topics)
         self.producer = produce()
         self.mongo_conn = DbConnection()
@@ -25,11 +27,13 @@ class Consumer:
         self.dal_elastic.create_index(index_name)
 
 
-    def __fit_document_to_elastic(self, document):
+    def __fit_document_to_elastic(self, document, new_field='text'):
         doc = {}
         for i in document:
             if i != self.file_field:
                 doc[i] = document[i]
+            else:
+                doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
 
         return doc
 

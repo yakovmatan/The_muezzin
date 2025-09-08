@@ -2,3 +2,4 @@ kafka-python
 pymongo
 pydantic
 elasticsearch==8.15.0
+faster-whisper

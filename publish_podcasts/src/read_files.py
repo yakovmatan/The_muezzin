@@ -13,6 +13,8 @@ class ReadFiles:
         logger.info("start to get metadata on files")
         files = []
         for subdir in self.path.iterdir():
+            if not subdir.is_file():
+                continue
             file = {}
             path = str(PurePosixPath(subdir)) #
             file_size = str(subdir.stat().st_size)

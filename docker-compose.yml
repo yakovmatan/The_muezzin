@@ -36,6 +36,26 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  elasticsearch:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - "9200:9200"
+
+  kibana:
+    container_name: kib
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+
 
   publish_podcasts:
     build:
@@ -44,10 +64,12 @@ services:
     container_name: publish_podcasts
     environment:
       KAFKA_BROKER: kafka:9092
+      FILE_PATH: /app/podcasts
+      TOPIC: podcasts
     ports:
       - "8001:8001"
     volumes:
-      - C:/:/app/C
+      - C:/podcasts:/app/podcasts
     depends_on:
       - kafka
 
@@ -65,8 +87,13 @@ services:
       MONGODB_HOST: mongodb
       MONGODB_PORT: 27017
       MONGODB_AUTH_DB: admin
+      TOPIC: podcasts
+      INDEX_NAME: podcasts
+      ES_HOST: elasticsearch
     ports:
       - "8003:8003"
+    volumes:
+      - C:/podcasts:/app/podcasts
 
 
 

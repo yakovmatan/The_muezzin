@@ -10,7 +10,8 @@ log = get_logger()
 
 class Consumer:
 
-    def __init__(self, *topics, index_name):
+    def __init__(self, *topics, index_name, file_field='path'):
+        self.file_field = file_field
         self.index_name = index_name
         self.events = consumer(*topics)
         self.producer = produce()
@@ -23,11 +24,11 @@ class Consumer:
     def __create_index_to_elasitc(self, index_name):
         self.dal_elastic.create_index(index_name)
 
-    @staticmethod
-    def fit_document_to_elastic(document):
+
+    def __fit_document_to_elastic(self, document):
         doc = {}
         for i in document:
-            if i != "path":
+            if i != self.file_field:
                 doc[i] = document[i]
 
         return doc
@@ -38,9 +39,9 @@ class Consumer:
             log.info("starting to consume")
             unique_id = get_unique_identifier(messages.value, str(i))
             # Message splitting
-            doc = Consumer.fit_document_to_elastic(messages.value)
+            doc = self.__fit_document_to_elastic(messages.value)
             # Sending to Elastic
             self.dal_elastic.index_documents(self.index_name, doc, unique_id)
             # Sending to mongo
-            self.dal_mongo.insert_file(messages.value["path"], unique_id)
+            self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
 

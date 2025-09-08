@@ -1,13 +1,14 @@
 from configurations.kafka_configuration import produce, send_event
 from logger.logger import get_logger
 from publish_podcasts.src.read_files import ReadFiles
+from publish_podcasts.src.config import *
 
 log = get_logger()
 
 
 class Manager:
     def __init__(self):
-        self.files = ReadFiles('C:/podcasts').read_metadata_on_file()
+        self.files = ReadFiles(FILE_PATH).read_metadata_on_file()
         self.producer = produce()
 
     #Posting messages to Kafka by topic

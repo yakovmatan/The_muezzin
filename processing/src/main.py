@@ -1,6 +1,6 @@
 from processing.src.consumer import Consumer
-
-consumer = Consumer('podcasts', index_name='podcasts')
+from processing.src.config import *
+consumer = Consumer(TOPIC, index_name=INDEX_NAME)
 
 def main():
     consumer.publish_messages()

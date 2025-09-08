@@ -1,6 +1,8 @@
 from pathlib import Path, PurePosixPath
 import datetime
+from logger.logger_to_elasic import Logger
 
+logger = Logger.get_logger()
 
 class ReadFiles:
 
@@ -8,8 +10,11 @@ class ReadFiles:
         self.path = Path(path)
 
     def read_metadata_on_file(self):
+        logger.info("start to get metadata on files")
         files = []
         for subdir in self.path.iterdir():
+            if not subdir.is_file():
+                continue
             file = {}
             path = str(PurePosixPath(subdir)) #
             file_size = str(subdir.stat().st_size)
@@ -21,7 +26,7 @@ class ReadFiles:
             file["file_name"] = file_name
             file["created_at"] = to_time
             files.append(file)
-
+        logger.info("finish to get metadata on files")
         return files
 
 

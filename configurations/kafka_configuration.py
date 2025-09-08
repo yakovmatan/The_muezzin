@@ -2,6 +2,9 @@ import json
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
 import os
+from logger.logger_to_elasic import Logger
+
+logger = Logger.get_logger()
 
 kafka_broker = os.getenv('KAFKA_BROKER', 'localhost:9092')
 
@@ -16,7 +19,8 @@ def consumer(*topics):
                                )
         return events
     except Exception as e:
-        return {'consume error': e}
+        logger.error(e)
+        return
 
 
 def produce():
@@ -26,7 +30,8 @@ def produce():
                              json.dumps(x).encode('utf-8'))
         return producer
     except Exception as e:
-        return {'producer error': e}
+        logger.error(e)
+        return
 
 def send_event(producer, topic, event):
     producer.send(topic, event)

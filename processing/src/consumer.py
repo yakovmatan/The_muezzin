@@ -9,9 +9,10 @@ from processing.src.unique_identifier import get_unique_identifier
 
 logger = Logger.get_logger()
 
+
 class Consumer:
 
-    def __init__(self, *topics, index_name, file_field='path'):
+    def __init__(self, *topics, index_name: str, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
         self.text_extract = TextExtraction()
@@ -23,9 +24,8 @@ class Consumer:
         self.dal_elastic = DalElastic(self.elastic_conn)
         self.__create_index_to_elasitc(index_name)
 
-    def __create_index_to_elasitc(self, index_name):
+    def __create_index_to_elasitc(self, index_name: str):
         self.dal_elastic.create_index(index_name)
-
 
     def __fit_document_to_elastic(self, document, new_field='text'):
         doc = {}
@@ -34,9 +34,7 @@ class Consumer:
                 doc[i] = document[i]
             else:
                 doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
-        logger.info(f"the document fit to elastic")
         return doc
-
 
     def publish_messages(self):
         logger.info("starting to consume")
@@ -48,4 +46,3 @@ class Consumer:
             self.dal_elastic.index_documents(self.index_name, doc, unique_id)
             # Sending to mongo
             self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
-

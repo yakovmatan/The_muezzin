@@ -3,6 +3,7 @@ from logger.logger_to_elasic import Logger
 
 logger = Logger.get_logger()
 
+
 class DalElastic:
 
     def __init__(self, connection: Elasticsearch):
@@ -17,8 +18,7 @@ class DalElastic:
         else:
             logger.info(f"Index {index_name} already exists")
 
-
-    def index_documents(self, index_name, documents, doc_id):
+    def index_documents(self, index_name: str, documents, doc_id):
         try:
             res = self.es.index(index=index_name, id=doc_id, document=documents)
             logger.info(f"result={res['result']}")
@@ -26,8 +26,7 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Failed to index document: {e}")
 
-
-    def get_all_id_from_index(self, index_name):
+    def get_all_id_from_index(self, index_name: str):
         try:
             documents = self.es.search(index=index_name, body={
                 "query": {"match_all": {}}
@@ -39,3 +38,17 @@ class DalElastic:
             logger.info("pull from elastic all id file")
         except Exception as e:
             logger.error(f"Failed to pulling id from elastic: {e}")
+
+    def add_field(self, index_name: str, document_id, text: str, field_to_add: str):
+        try:
+            update_data = {
+                "doc": {
+                    field_to_add: text,
+                }
+            }
+
+            response = self.es.update(index=index_name, id=document_id, body=update_data)
+            logger.info(f"Update response: {response}")
+
+        except Exception as e:
+            logger.error(f"Error updating document: {e}")

@@ -1,7 +1,9 @@
 from faster_whisper import WhisperModel
+
 from logger.logger_to_elasic import Logger
 
 logger = Logger.get_logger()
+
 
 class TextExtraction:
 

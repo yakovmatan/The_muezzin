@@ -15,7 +15,7 @@ def consumer(*topics):
                                group_id='my_group',
                                value_deserializer=lambda m: json.loads(m.decode('ascii')),
                                bootstrap_servers=[kafka_broker],
-                               auto_offset_reset = 'earliest'
+                               auto_offset_reset='earliest'
                                )
         return events
     except Exception as e:
@@ -26,14 +26,14 @@ def consumer(*topics):
 def produce():
     try:
         producer = KafkaProducer(bootstrap_servers=[kafka_broker],
-                             value_serializer=lambda x:
-                             json.dumps(x).encode('utf-8'))
+                                 value_serializer=lambda x:
+                                 json.dumps(x).encode('utf-8'))
         return producer
     except Exception as e:
         logger.error(e)
         return
 
+
 def send_event(producer, topic, event):
     producer.send(topic, event)
     producer.flush()
-

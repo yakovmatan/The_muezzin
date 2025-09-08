@@ -6,11 +6,11 @@ from elasticsearch import Elasticsearch
 class ElasticConn:
 
     def __init__(self):
-        conn = os.getenv('ES_HOST','localhost')
-        self.es:Elasticsearch = Elasticsearch(f'http://{conn}:9200')
+        conn = os.getenv('ES_HOST', 'localhost')
+        self.es: Elasticsearch = Elasticsearch(f'http://{conn}:9200')
         self.__availability_check()
 
-    def get_es(self) -> Elasticsearch :
+    def get_es(self) -> Elasticsearch:
         return self.es
 
     def __availability_check(self):

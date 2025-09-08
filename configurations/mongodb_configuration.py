@@ -5,16 +5,17 @@ from logger.logger_to_elasic import Logger
 
 logger = Logger.get_logger()
 
+
 class DbConnection:
     def __init__(self):
 
         try:
-            mongo_user = os.getenv("MONGODB_USER","admin")
-            mongo_password = os.getenv("MONGODB_PASSWORD","yakov")
-            mongo_db = os.getenv("MONGODB_DATABASE","the_muezzin")
-            mongo_host = os.getenv("MONGODB_HOST","localhost")
-            mongo_port = os.getenv("MONGODB_PORT","27017")
-            auth_db = os.getenv("MONGODB_AUTH_DB","admin")
+            mongo_user = os.getenv("MONGODB_USER", "admin")
+            mongo_password = os.getenv("MONGODB_PASSWORD", "yakov")
+            mongo_db = os.getenv("MONGODB_DATABASE", "the_muezzin")
+            mongo_host = os.getenv("MONGODB_HOST", "localhost")
+            mongo_port = os.getenv("MONGODB_PORT", "27017")
+            auth_db = os.getenv("MONGODB_AUTH_DB", "admin")
 
             self.client = pymongo.MongoClient(
                 host=mongo_host,

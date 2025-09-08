@@ -4,13 +4,14 @@ from logger.logger_to_elasic import Logger
 
 logger = Logger.get_logger()
 
+
 class DalMongo:
 
     def __init__(self, connection: DbConnection):
         self.connection = connection
         self.fs = gridfs.GridFS(self.connection.db)
 
-    #Converting the file to binary and insert it into Mongo
+    # Converting the file to binary and insert it into Mongo
     def insert_file(self, file_path, file_id):
         try:
             with open(file_path, 'rb') as f:

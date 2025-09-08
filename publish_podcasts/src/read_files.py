@@ -4,6 +4,7 @@ from logger.logger_to_elasic import Logger
 
 logger = Logger.get_logger()
 
+
 class ReadFiles:
 
     def __init__(self, path):
@@ -16,7 +17,7 @@ class ReadFiles:
             if not subdir.is_file():
                 continue
             file = {}
-            path = str(PurePosixPath(subdir)) #
+            path = str(PurePosixPath(subdir))  #
             file_size = str(subdir.stat().st_size)
             file_name = subdir.name
             created_at = subdir.stat().st_ctime
@@ -28,6 +29,3 @@ class ReadFiles:
             files.append(file)
         logger.info("finish to get metadata on files")
         return files
-
-
-

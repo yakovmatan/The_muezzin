@@ -1,6 +1,9 @@
 import os
 import pymongo
 from pymongo.errors import PyMongoError
+from logger.logger_to_elasic import Logger
+
+logger = Logger.get_logger()
 
 class DbConnection:
     def __init__(self):
@@ -23,4 +26,5 @@ class DbConnection:
 
             self.db = self.client[mongo_db]
         except PyMongoError as e:
-            raise RuntimeError(f"MongoDB connection error: {e}")
+            logger.error(f"MongoDB connection error: {e}")
+            raise

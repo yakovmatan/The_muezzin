@@ -25,3 +25,17 @@ class DalElastic:
             self.es.indices.refresh(index=index_name)
         except Exception as e:
             logger.error(f"Failed to index document: {e}")
+
+
+    def get_all_id_from_index(self, index_name):
+        try:
+            documents = self.es.search(index=index_name, body={
+                "query": {"match_all": {}}
+            }, size=10000)
+            ls = []
+            for hit in documents["hits"]["hits"]:
+                doc_id = hit["_id"]
+                ls.append(doc_id)
+            logger.info("pull from elastic all id file")
+        except Exception as e:
+            logger.error(f"Failed to pulling id from elastic: {e}")

@@ -2,8 +2,8 @@ from configurations.elastic_configuration import ElasticConn
 from configurations.kafka_configuration import consumer, produce
 from configurations.mongodb_configuration import DbConnection
 from logger.logger_to_elasic import Logger
-from processing.src.dal_elastic import DalElastic
-from processing.src.dal_mongo import DalMongo
+from dals.dal_elastic import DalElastic
+from dals.dal_mongo import DalMongo
 from processing.src.unique_identifier import get_unique_identifier
 
 logger = Logger.get_logger()

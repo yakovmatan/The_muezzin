@@ -1,5 +1,3 @@
-import time
-
 from publish_podcasts.src.produser import Manager
 from publish_podcasts.src.config import *
 manager = Manager()

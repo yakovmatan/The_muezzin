@@ -35,8 +35,8 @@ class Consumer:
 
 
     def publish_messages(self):
+        logger.info("starting to consume")
         for i, messages in enumerate(self.events, start=1):
-            logger.info("starting to consume")
             unique_id = get_unique_identifier(messages.value, str(i))
             # Message splitting
             doc = self.__fit_document_to_elastic(messages.value)

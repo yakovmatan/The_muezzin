@@ -34,7 +34,7 @@ class Consumer:
                 doc[i] = document[i]
             else:
                 doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
-
+        logger.info(f"the document fit to elastic")
         return doc
 
 

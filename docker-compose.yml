@@ -49,7 +49,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - ./C/podcasts:/app/podcasts:ro
+      - C:/podcasts:/app/podcasts
     depends_on:
       - kafka
 

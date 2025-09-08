@@ -66,6 +66,7 @@ services:
       KAFKA_BROKER: kafka:9092
       FILE_PATH: /app/podcasts
       TOPIC: podcasts
+      ES_HOST: elasticsearch
     ports:
       - "8001:8001"
     volumes:

@@ -36,7 +36,7 @@ class Consumer:
             #     doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
         return doc
 
-    def publish_messages(self):
+    def consume_messages(self):
         logger.info("starting to consume")
         for i, messages in enumerate(self.events, start=1):
             unique_id = get_unique_identifier(messages.value, str(i))

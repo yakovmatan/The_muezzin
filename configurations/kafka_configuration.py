@@ -37,3 +37,4 @@ def produce():
 def send_event(producer, topic, event):
     producer.send(topic, event)
     producer.flush()
+    logger.info(f"The event: {event} send to topic: {topic}")

@@ -2,6 +2,7 @@ import os
 import pymongo
 from pymongo.errors import PyMongoError
 from logger.logger_to_elasic import Logger
+from configurations.config import *
 
 logger = Logger.get_logger()
 
@@ -10,22 +11,15 @@ class DbConnection:
     def __init__(self):
 
         try:
-            mongo_user = os.getenv("MONGODB_USER", "admin")
-            mongo_password = os.getenv("MONGODB_PASSWORD", "yakov")
-            mongo_db = os.getenv("MONGODB_DATABASE", "the_muezzin")
-            mongo_host = os.getenv("MONGODB_HOST", "localhost")
-            mongo_port = os.getenv("MONGODB_PORT", "27017")
-            auth_db = os.getenv("MONGODB_AUTH_DB", "admin")
-
             self.client = pymongo.MongoClient(
-                host=mongo_host,
-                port=int(mongo_port),
-                username=mongo_user,
-                password=mongo_password,
-                authSource=auth_db
+                host=MONGO_HOST,
+                port=int(MONGO_PORT),
+                username=MONGO_USER,
+                password=MONGO_PASSWORD,
+                authSource=AUTH_DB
             )
 
-            self.db = self.client[mongo_db]
+            self.db = self.client[MONGO_DB]
         except PyMongoError as e:
             logger.error(f"MongoDB connection error: {e}")
             raise

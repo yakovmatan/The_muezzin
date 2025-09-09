@@ -121,6 +121,7 @@ services:
       MONGODB_PORT: 27017
       MONGODB_AUTH_DB: admin
       TOPIC_SUB: ids
+      TOPIC_PUB: with_text
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
     ports:

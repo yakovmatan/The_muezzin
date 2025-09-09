@@ -1,10 +1,9 @@
 from configurations.elastic_configuration import ElasticConn
-from configurations.kafka_configuration import consumer, produce
+from configurations.kafka_configuration import consumer, produce, send_event
 from configurations.mongodb_configuration import DbConnection
 from logger.logger_to_elasic import Logger
 from dals.dal_elastic import DalElastic
 from dals.dal_mongo import DalMongo
-from processing.src.text_extraction import TextExtraction
 from processing.src.unique_identifier import get_unique_identifier
 
 logger = Logger.get_logger()
@@ -12,11 +11,12 @@ logger = Logger.get_logger()
 
 class Consumer:
 
-    def __init__(self, *topics, index_name: str, file_field='path'):
+    def __init__(self, *topics_sub, topic_pub, index_name: str, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
-        self.text_extract = TextExtraction()
-        self.events = consumer(*topics)
+        # self.text_extract = TextExtraction()
+        self.topic_pub = topic_pub
+        self.events = consumer(*topics_sub)
         self.producer = produce()
         self.mongo_conn = DbConnection()
         self.elastic_conn = ElasticConn().get_es()
@@ -32,8 +32,8 @@ class Consumer:
         for i in document:
             if i != self.file_field:
                 doc[i] = document[i]
-            else:
-                doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
+            # else:
+            #     doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
         return doc
 
     def publish_messages(self):
@@ -46,3 +46,5 @@ class Consumer:
             self.dal_elastic.index_documents(self.index_name, doc, unique_id)
             # Sending to mongo
             self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
+            # Sending id to kafka
+            send_event(self.producer, self.topic_pub, {'id': unique_id})

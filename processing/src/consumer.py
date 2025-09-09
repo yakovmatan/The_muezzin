@@ -1,19 +1,21 @@
 from configurations.elastic_configuration import ElasticConn
-from configurations.kafka_configuration import consumer, produce
+from configurations.kafka_configuration import consumer, produce, send_event
 from configurations.mongodb_configuration import DbConnection
 from logger.logger_to_elasic import Logger
-from processing.src.dal_elastic import DalElastic
-from processing.src.dal_mongo import DalMongo
+from dals.dal_elastic import DalElastic
+from dals.dal_mongo import DalMongo
 from processing.src.unique_identifier import get_unique_identifier
 
 logger = Logger.get_logger()
 
+
 class Consumer:
 
-    def __init__(self, *topics, index_name, file_field='path'):
+    def __init__(self, *topics_sub, topic_pub, index_name: str, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
-        self.events = consumer(*topics)
+        self.topic_pub = topic_pub
+        self.events = consumer(*topics_sub)
         self.producer = produce()
         self.mongo_conn = DbConnection()
         self.elastic_conn = ElasticConn().get_es()
@@ -21,11 +23,10 @@ class Consumer:
         self.dal_elastic = DalElastic(self.elastic_conn)
         self.__create_index_to_elasitc(index_name)
 
-    def __create_index_to_elasitc(self, index_name):
+    def __create_index_to_elasitc(self, index_name: str):
         self.dal_elastic.create_index(index_name)
 
-
-    def __fit_document_to_elastic(self, document):
+    def __fit_document_to_elastic(self, document, new_field='text'):
         doc = {}
         for i in document:
             if i != self.file_field:
@@ -33,15 +34,15 @@ class Consumer:
 
         return doc
 
-
-    def publish_messages(self):
+    def consume_messages(self):
         logger.info("starting to consume")
         for i, messages in enumerate(self.events, start=1):
             unique_id = get_unique_identifier(messages.value, str(i))
             # Message splitting
             doc = self.__fit_document_to_elastic(messages.value)
             # Sending to Elastic
-            self.dal_elastic.index_documents(self.index_name, doc, unique_id)
+            self.dal_elastic.index_document(self.index_name, doc, unique_id)
             # Sending to mongo
             self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
-
+            # Sending id to kafka
+            send_event(self.producer, self.topic_pub, {'id': unique_id})

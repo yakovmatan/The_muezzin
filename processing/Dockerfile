@@ -8,6 +8,7 @@ RUN pip install -r requirements.txt
 
 COPY processing /app/processing
 COPY configurations /app/configurations
+COPY dals /app/dals
 COPY logger /app/logger
 
 CMD ["python", "-m" , "processing.src.main"]

@@ -95,13 +95,36 @@ services:
       MONGODB_HOST: mongodb
       MONGODB_PORT: 27017
       MONGODB_AUTH_DB: admin
-      TOPIC: podcasts
+      TOPIC_SUB: podcasts
+      TOPIC_PUB: ids
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
     ports:
       - "8003:8003"
     volumes:
       - C:/podcasts:/app/podcasts
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  extract_text:
+    build:
+      context: .
+      dockerfile: extract_text/Dockerfile
+    container_name: extract_text
+    environment:
+      KAFKA_BROKER: kafka:9092
+      MONGODB_USER: admin
+      MONGODB_PASSWORD: yakov
+      MONGODB_DATABASE: the_muezzin
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+      MONGODB_AUTH_DB: admin
+      TOPIC_SUB: ids
+      INDEX_NAME: podcasts
+      ES_HOST: elasticsearch
+    ports:
+      - "8004:8004"
     depends_on:
       elasticsearch:
         condition: service_healthy

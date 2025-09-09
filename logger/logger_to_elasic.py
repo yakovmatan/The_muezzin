@@ -1,8 +1,11 @@
 import logging
 from configurations.elastic_configuration import ElasticConn
 from datetime import datetime
+
+
 class Logger:
     _logger = None
+
     @classmethod
     def get_logger(cls, name="logger_to_elastic", index="logs", level=logging.DEBUG):
         if cls._logger:
@@ -11,6 +14,7 @@ class Logger:
         logger.setLevel(level)
         if not logger.handlers:
             es = ElasticConn().get_es()
+
             class ESHandler(logging.Handler):
                 def emit(self, record):
                     try:
@@ -23,6 +27,7 @@ class Logger:
                         })
                     except Exception as e:
                         print(f"ES log failed: {e}")
+
             logger.addHandler(ESHandler())
             logger.addHandler(logging.StreamHandler())
         cls._logger = logger

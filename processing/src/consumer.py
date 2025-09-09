@@ -41,7 +41,7 @@ class Consumer:
             # Message splitting
             doc = self.__fit_document_to_elastic(messages.value)
             # Sending to Elastic
-            self.dal_elastic.index_documents(self.index_name, doc, unique_id)
+            self.dal_elastic.index_document(self.index_name, doc, unique_id)
             # Sending to mongo
             self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
             # Sending id to kafka

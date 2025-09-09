@@ -18,7 +18,8 @@ class DalElastic:
         else:
             logger.info(f"Index {index_name} already exists")
 
-    def index_documents(self, index_name: str, documents, doc_id):
+    # Insert documents to elastic
+    def index_document(self, index_name: str, documents, doc_id):
         try:
             res = self.es.index(index=index_name, id=doc_id, document=documents)
             self.es.indices.refresh(index=index_name)
@@ -27,6 +28,7 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Failed to index document: {e}")
 
+    # Update document in elastic with a new field
     def add_field(self, index_name: str, document_id, new_value: str, new_filed: str):
         try:
             update_data = {

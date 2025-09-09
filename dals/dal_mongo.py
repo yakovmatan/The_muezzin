@@ -20,6 +20,7 @@ class DalMongo:
         except Exception as e:
             logger.error(f"Failed to insert file: {e}")
 
+    # Get a bytes file from Mongo by ID
     def get_file_by_id(self, file_id):
         try:
             grid_out = self.fs.get(file_id)

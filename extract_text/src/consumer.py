@@ -29,16 +29,20 @@ class Consumer:
             return ""
         return document[field]
 
+    # Pull file bytes by id from mongo, convert the file bytes to file audio, Transcriber
     def __extract_text(self, unique_id):
         file_bytes = self.dal_mongo.get_file_by_id(unique_id)
         file_audio = ConvertBytes(file_bytes).convert_to_audio()
         text = self.text_extract.extract_text_from_a_file(file_audio)
         return text
 
+
     def consume_messages(self):
         logger.info(f"starting to consume from: {self.topic_sub}")
-        for i, messages in enumerate(self.events, start=1):
+        for  messages in self.events:
+            # get id from kafka
             unique_id = Consumer.extract_id_from_message(messages.value)
+            # Extract text
             text = self.__extract_text(unique_id)
             # Update in Elasticsearch
             self.dal_elastic.add_field(self.index_name, unique_id, text, self.new_field)

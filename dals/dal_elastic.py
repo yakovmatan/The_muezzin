@@ -23,7 +23,7 @@ class DalElastic:
         try:
             res = self.es.index(index=index_name, id=doc_id, document=documents)
             self.es.indices.refresh(index=index_name)
-            logger.info(f"result={res['result']}")
+            logger.info(f"result={res['result']} the document insert to index: {index_name}")
 
         except Exception as e:
             logger.error(f"Failed to index document: {e}")

@@ -16,7 +16,7 @@ class DalMongo:
         try:
             with open(file_path, 'rb') as f:
                 file_id = self.fs.put(f, _id=file_id)
-            logger.info(f"File stored with ID: {file_id}")
+            logger.info(f"File stored in mongodb with ID: {file_id}")
         except Exception as e:
             logger.error(f"Failed to insert file: {e}")
 
@@ -25,7 +25,7 @@ class DalMongo:
         try:
             grid_out = self.fs.get(file_id)
             file_data = grid_out.read()
-            logger.info(f"File with ID: {file_id} pull from mongo")
+            logger.info(f"File with ID: {file_id} pull from mongodb")
             return file_data
         except Exception as e:
             logger.error(f"Failed to get file: {e}")

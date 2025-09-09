@@ -32,4 +32,4 @@ which is the metadata and the file itself quickly,
 and give the heavy process of transcribing from the audio to another service,
 which will update the information when it is ready.
 
-To run, run (.\scripts\commands.bat in terminal).
+To run, run ".\scripts\commands.bat in terminal".

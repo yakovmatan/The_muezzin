@@ -43,3 +43,18 @@ class DalElastic:
 
         except Exception as e:
             logger.error(f"Error updating document: {e}")
+
+    def add_fields(self, index_name: str, document_id, **fields_and_value):
+        try:
+            update_data = {
+                "doc": {
+                    **fields_and_value,
+                }
+            }
+
+            response = self.es.update(index=index_name, id=document_id, body=update_data)
+            self.es.indices.refresh(index=index_name)
+            logger.info(f"Update response: {response}")
+
+        except Exception as e:
+            logger.error(f"Error updating document: {e}")

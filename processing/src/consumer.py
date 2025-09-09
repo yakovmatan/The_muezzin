@@ -14,7 +14,6 @@ class Consumer:
     def __init__(self, *topics_sub, topic_pub, index_name: str, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
-        # self.text_extract = TextExtraction()
         self.topic_pub = topic_pub
         self.events = consumer(*topics_sub)
         self.producer = produce()

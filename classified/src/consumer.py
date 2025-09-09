@@ -10,15 +10,12 @@ logger = Logger.get_logger()
 
 class Consumer:
 
-    def __init__(self, *topics_sub, topic_pub, index_name: str, new_field='text', list_hostile: list, list_less_hostile: list):
+    def __init__(self, *topics_sub, index_name: str, list_hostile: list, list_less_hostile: list):
         self.list_hostile = list_hostile
         self.list_less_hostile = list_less_hostile
-        self.new_field = new_field
         self.index_name = index_name
         self.topic_sub = topics_sub
-        self.topic_pub = topic_pub
         self.events = consumer(*topics_sub)
-        self.producer = produce()
         self.elastic_conn = ElasticConn().get_es()
         self.dal_elastic = DalElastic(self.elastic_conn)
 

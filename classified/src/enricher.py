@@ -33,11 +33,11 @@ class Enricher:
         return percentage if percentage < 100 else 100
 
     @staticmethod
-    def is_bds(percentage):
+    def is_bds(percentage: int):
         return percentage > 30
 
     @staticmethod
-    def risk_level(percentage):
+    def risk_level(percentage: int):
         if percentage <= 10:
             return 'none'
         elif percentage <= 30:

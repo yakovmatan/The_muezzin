@@ -58,3 +58,13 @@ class DalElastic:
 
         except Exception as e:
             logger.error(f"Error updating document: {e}")
+
+    def get_document_by_id(self, index_name: str, doc_id):
+        try:
+            response = self.es.get(index=index_name, id=doc_id)
+            if response['found']:
+                return response['_source']
+            else:
+                logger.error(f"Document with ID '{doc_id}' not found in index '{index_name}'.")
+        except Exception as e:
+            logger.error(f"Error get document: {e}")

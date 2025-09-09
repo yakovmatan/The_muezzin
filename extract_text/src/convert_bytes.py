@@ -12,7 +12,9 @@ class ConvertBytes:
 
     def convert_to_audio(self):
         try:
+            # Convert the bytes to like file
             like_file = io.BytesIO(self.file_byte)
+            # Convert the like file to array numpy
             audio, sr = sf.read(like_file)
             logger.info("convert from bytes to file audio")
             return audio

@@ -35,7 +35,6 @@ class Consumer:
         text = self.text_extract.extract_text_from_a_file(file_audio)
         return text
 
-
     def consume_messages(self):
         logger.info(f"starting to consume from: {self.topic_sub}")
         for i, messages in enumerate(self.events, start=1):

@@ -31,8 +31,7 @@ class Consumer:
         for i in document:
             if i != self.file_field:
                 doc[i] = document[i]
-            # else:
-            #     doc[new_field] = self.text_extract.extract_text_from_a_file(document[i])
+
         return doc
 
     def consume_messages(self):

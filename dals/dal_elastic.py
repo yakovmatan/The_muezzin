@@ -21,8 +21,9 @@ class DalElastic:
     def index_documents(self, index_name: str, documents, doc_id):
         try:
             res = self.es.index(index=index_name, id=doc_id, document=documents)
-            logger.info(f"result={res['result']}")
             self.es.indices.refresh(index=index_name)
+            logger.info(f"result={res['result']}")
+
         except Exception as e:
             logger.error(f"Failed to index document: {e}")
 
@@ -39,15 +40,16 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Failed to pulling id from elastic: {e}")
 
-    def add_field(self, index_name: str, document_id, text: str, field_to_add: str):
+    def add_field(self, index_name: str, document_id, new_value: str, new_filed: str):
         try:
             update_data = {
                 "doc": {
-                    field_to_add: text,
+                    new_filed: new_value,
                 }
             }
 
             response = self.es.update(index=index_name, id=document_id, body=update_data)
+            self.es.indices.refresh(index=index_name)
             logger.info(f"Update response: {response}")
 
         except Exception as e:

@@ -12,8 +12,8 @@ logger = Logger.get_logger()
 
 class Consumer:
 
-    def __init__(self, *topics_sub, index_name: str, file_field='path'):
-        self.file_field = file_field
+    def __init__(self, *topics_sub, index_name: str, new_field='text'):
+        self.new_field = new_field
         self.index_name = index_name
         self.topic_sub = topics_sub
         self.events = consumer(*topics_sub)
@@ -36,4 +36,10 @@ class Consumer:
         return text
 
 
-
+    def consume_messages(self):
+        logger.info(f"starting to consume from: {self.topic_sub}")
+        for i, messages in enumerate(self.events, start=1):
+            unique_id = Consumer.extract_id_from_message(messages.value)
+            text = self.__extract_text(unique_id)
+            # Update in Elasticsearch
+            self.dal_elastic.add_field(self.index_name, unique_id, text, self.new_field)

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from services.data_retrieval.src.config import *
 from services.data_retrieval.src.manager import Manager
+
 app = FastAPI()
 manager = Manager()
 
@@ -13,6 +14,7 @@ def get_all_podcasts():
     except Exception as e:
         return e
 
+
 @app.get("/is_bds")
 def get_is_bds():
     try:
@@ -20,4 +22,3 @@ def get_is_bds():
         return result
     except Exception as e:
         return e
-

@@ -74,8 +74,6 @@ services:
       TOPIC: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_publish_podcasts
-    ports:
-      - "8001:8001"
     volumes:
       - C:/podcasts:/app/podcasts
     depends_on:
@@ -101,8 +99,6 @@ services:
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_processing
-    ports:
-      - "8003:8003"
     volumes:
       - C:/podcasts:/app/podcasts
     depends_on:
@@ -126,8 +122,6 @@ services:
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_extract_text
-    ports:
-      - "8004:8004"
     depends_on:
       elasticsearch:
         condition: service_healthy

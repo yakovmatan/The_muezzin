@@ -28,22 +28,7 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Failed to index document: {e}")
 
-    # Update document in elastic with a new field
-    def add_field(self, index_name: str, document_id, new_value: str, new_filed: str):
-        try:
-            update_data = {
-                "doc": {
-                    new_filed: new_value,
-                }
-            }
-
-            response = self.es.update(index=index_name, id=document_id, body=update_data)
-            self.es.indices.refresh(index=index_name)
-            logger.info(f"Update response: {response}")
-
-        except Exception as e:
-            logger.error(f"Error updating document: {e}")
-
+    # Update document in elastic with a new fields
     def add_fields(self, index_name: str, document_id, **fields_and_value):
         try:
             update_data = {
@@ -59,12 +44,19 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Error updating document: {e}")
 
-    def get_document_by_id(self, index_name: str, doc_id):
+    def search(self, index_name):
+        query_body = {
+            "query": {
+                "match_all": {}
+            },
+            "size": 10000
+        }
+
         try:
-            response = self.es.get(index=index_name, id=doc_id)
-            if response['found']:
-                return response['_source']
-            else:
-                logger.error(f"Document with ID '{doc_id}' not found in index '{index_name}'.")
+            response = self.es.search(index=index_name, body=query_body)
+
+            logger.info(f"Found {response['hits']['total']['value']} documents:")
+            return [hit['_source'] for hit in response['hits']['hits']]
+
         except Exception as e:
-            logger.error(f"Error get document: {e}")
+            print(f"An error occurred: {e}")

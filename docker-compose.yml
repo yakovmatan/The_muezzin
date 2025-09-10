@@ -129,6 +129,21 @@ services:
       elasticsearch:
         condition: service_healthy
 
+  data_retrieval:
+    build:
+      context: .
+      dockerfile: ../pythonProject1/Dockerfile
+    container_name: data_retrieval
+    environment:
+      INDEX_NAME: podcasts
+      ES_HOST: elasticsearch
+    ports:
+      - "8006:8006"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+
 
 
 volumes:

@@ -44,7 +44,7 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Error updating document: {e}")
 
-    def search(self, index_name):
+    def search_all(self, index_name):
         query_body = {
             "query": {
                 "match_all": {}

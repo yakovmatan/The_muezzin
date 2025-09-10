@@ -1,6 +1,8 @@
 # The muezzin - المؤذن
 
 
+## services
+
 ### 1. Publish podcasts
 1. Reading the file by its exact path in the local folder .
 2. Creating metadata information.
@@ -56,4 +58,23 @@ Despite this, the classification of the text and the calculation of the risk are
 and not in another service, both because it is an easy calculation that will not require the input of the text into elasticsearchת
 and also because I want to bring the text ready with the calculations on it ready to work straight away.
 
+## utils
+In utils there are classes that are used by several services to avoid duplicating code.
+All services take from there.
+
+### 1.configurations
+1. Connecting to the elastic.
+2. Connecting pub to kafka.
+3. Connecting sub to kafka.
+4. Connecting to mongodb.
+
+### 2.dals
+1. Data access layer for mongodb
+2. Data access layer for elasticsearch
+
+### 3.logger
+Writes logs for Elastic
+
 To run, run ".\scripts\commands.bat in terminal".
+
+

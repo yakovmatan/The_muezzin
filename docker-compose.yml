@@ -66,7 +66,7 @@ services:
   publish_podcasts:
     build:
       context: .
-      dockerfile: publish_podcasts/Dockerfile
+      dockerfile: services/publish_podcasts/Dockerfile
     container_name: publish_podcasts
     environment:
       KAFKA_BROKER: kafka:9092
@@ -74,8 +74,6 @@ services:
       TOPIC: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_publish_podcasts
-    ports:
-      - "8001:8001"
     volumes:
       - C:/podcasts:/app/podcasts
     depends_on:
@@ -86,7 +84,7 @@ services:
   processing:
     build:
       context: .
-      dockerfile: processing/Dockerfile
+      dockerfile: services/processing/Dockerfile
     container_name: processing
     environment:
       KAFKA_BROKER: kafka:9092
@@ -101,19 +99,17 @@ services:
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_processing
-    ports:
-      - "8003:8003"
     volumes:
       - C:/podcasts:/app/podcasts
     depends_on:
       elasticsearch:
         condition: service_healthy
 
-  extract_text:
+  text_handling:
     build:
       context: .
-      dockerfile: extract_text/Dockerfile
-    container_name: extract_text
+      dockerfile: services/text_handling/Dockerfile
+    container_name: text_handling
     environment:
       KAFKA_BROKER: kafka:9092
       MONGODB_USER: admin
@@ -126,8 +122,6 @@ services:
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
       INDEX_LOG: logs_extract_text
-    ports:
-      - "8004:8004"
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -135,7 +129,7 @@ services:
   data_retrieval:
     build:
       context: .
-      dockerfile: ../pythonProject1/Dockerfile
+      dockerfile: services/data_retrieval/Dockerfile
     container_name: data_retrieval
     environment:
       INDEX_NAME: podcasts

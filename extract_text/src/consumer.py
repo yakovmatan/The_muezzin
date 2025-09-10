@@ -24,8 +24,8 @@ class ConsumerManager:
         self.dal_mongo = DalMongo(self.mongo_conn)
         self.dal_elastic = DalElastic(self.elastic_conn)
         self.text_extract = TextExtraction()
-        self.list_hostile = Decoder(HOSTILE).decoded_from_base64().split(',')
-        self.list_less_hostile = Decoder(LESS_HOSTILE).decoded_from_base64().split(',')
+        self.list_hostile = Decoder(HOSTILE).decoded_from_base64().lower().split(',')
+        self.list_less_hostile = Decoder(LESS_HOSTILE).decoded_from_base64().lower().split(',')
 
     @staticmethod
     def extract_id_from_message(document, field='id'):
@@ -42,8 +42,8 @@ class ConsumerManager:
 
     def __fields_and_value_to_add(self, text):
         fields_and_value = {'text': text}
-        score, word_count = Enricher.risk_score(text, self.list_hostile, self.list_less_hostile)
-        bds_percent = Enricher.danger_percentages(len(text), score, word_count)
+        score = Enricher.risk_score(text, self.list_hostile, self.list_less_hostile)
+        bds_percent = Enricher.danger_percentages(len(text), score)
         fields_and_value['bds_percent'] = bds_percent
         is_bds = Enricher.is_bds(bds_percent)
         fields_and_value['is_bds'] = is_bds

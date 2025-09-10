@@ -39,6 +39,9 @@
      a podcast between 10-30 is considered to be at medium risk,
      and more than that already represents a high risk.
 
+### 4. data_retrieval
+Provides an endpoint to receive all podcasts from Elastic.
+
 ### remark
 The process of inserting metadata into elasticsearch and files into mongodb
 is done in a separate service from the transcription of the file,

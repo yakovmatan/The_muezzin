@@ -1,12 +1,25 @@
 from configurations.elastic_configuration import ElasticConn
 from dals.dal_elastic import DalElastic
+from data_retrieval.src.builder_query import ElasticQueryBuilder
+
 
 class Manager:
 
     def __init__(self):
         self.ec = ElasticConn().get_es()
         self.dal_elastic = DalElastic(self.ec)
+        self.query_builder = ElasticQueryBuilder()
 
     def get_all_podcasts(self, index_name):
-        return self.dal_elastic.search_all(index_name)
+        query_body = {
+            "query": {
+                "match_all": {}
+            },
+            "size": 10000
+        }
 
+        return self.dal_elastic.search_by_query(index_name, query_body)
+
+    def get_is_bds_podcasts(self, index_name):
+        query_body = self.query_builder.add_term('is_bds', True).build()
+        return self.dal_elastic.search_by_query(index_name, query_body)

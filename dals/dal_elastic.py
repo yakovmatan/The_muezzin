@@ -44,16 +44,9 @@ class DalElastic:
         except Exception as e:
             logger.error(f"Error updating document: {e}")
 
-    def search_all(self, index_name):
-        query_body = {
-            "query": {
-                "match_all": {}
-            },
-            "size": 10000
-        }
-
+    def search_by_query(self, index_name, query):
         try:
-            response = self.es.search(index=index_name, body=query_body)
+            response = self.es.search(index=index_name, body=query)
 
             logger.info(f"Found {response['hits']['total']['value']} documents:")
             return [hit['_source'] for hit in response['hits']['hits']]

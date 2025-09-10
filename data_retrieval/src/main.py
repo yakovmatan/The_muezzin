@@ -13,3 +13,11 @@ def get_all_podcasts():
     except Exception as e:
         return e
 
+@app.get("/is_bds")
+def get_is_bds():
+    try:
+        result = manager.get_is_bds_podcasts(INDEX_NAME)
+        return result
+    except Exception as e:
+        return e
+

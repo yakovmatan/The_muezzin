@@ -11,13 +11,7 @@ class Manager:
         self.query_builder = ElasticQueryBuilder()
 
     def get_all_podcasts(self, index_name):
-        query_body = {
-            "query": {
-                "match_all": {}
-            },
-            "size": 10000
-        }
-
+        query_body = self.query_builder.add_match_all().build()
         return self.dal_elastic.search_by_query(index_name, query_body)
 
     def get_is_bds_podcasts(self, index_name):

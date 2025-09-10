@@ -1,5 +1,6 @@
 class ElasticQueryBuilder:
-    def __init__(self):
+    def __init__(self, size=10000):
+        self.size = size
         self.must = []
         self.should = []
         self.must_not = []
@@ -11,6 +12,11 @@ class ElasticQueryBuilder:
 
     def add_match_phrase(self, field: str, value: str, clause: str = "must"):
         query = {"match_phrase": {field: value}}
+        self._add_clause(clause, query)
+        return self
+
+    def add_match_all(self, clause: str = "must"):
+        query = {"match_all": {}}
         self._add_clause(clause, query)
         return self
 
@@ -54,4 +60,4 @@ class ElasticQueryBuilder:
         if self.must_not:
             bool_query["must_not"] = self.must_not
 
-        return {"query": {"bool":bool_query}}
+        return {"size": self.size, "query": {"bool":bool_query}}

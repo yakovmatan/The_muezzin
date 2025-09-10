@@ -66,7 +66,7 @@ services:
   publish_podcasts:
     build:
       context: .
-      dockerfile: publish_podcasts/Dockerfile
+      dockerfile: services/publish_podcasts/Dockerfile
     container_name: publish_podcasts
     environment:
       KAFKA_BROKER: kafka:9092
@@ -86,7 +86,7 @@ services:
   processing:
     build:
       context: .
-      dockerfile: processing/Dockerfile
+      dockerfile: services/processing/Dockerfile
     container_name: processing
     environment:
       KAFKA_BROKER: kafka:9092
@@ -109,11 +109,11 @@ services:
       elasticsearch:
         condition: service_healthy
 
-  extract_text:
+  text_handling:
     build:
       context: .
-      dockerfile: extract_text/Dockerfile
-    container_name: extract_text
+      dockerfile: services/text_handling/Dockerfile
+    container_name: text_handling
     environment:
       KAFKA_BROKER: kafka:9092
       MONGODB_USER: admin
@@ -135,7 +135,7 @@ services:
   data_retrieval:
     build:
       context: .
-      dockerfile: ../pythonProject1/Dockerfile
+      dockerfile: services/data_retrieval/Dockerfile
     container_name: data_retrieval
     environment:
       INDEX_NAME: podcasts

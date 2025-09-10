@@ -40,7 +40,10 @@
      and more than that already represents a high risk.
 
 ### 4. data_retrieval
-Provides an endpoint to receive all podcasts from Elastic.
+1. Query builder for Elasticsearch
+2. Provides 2 endpoint the first to receive all podcasts from Elastic.
+   to get detailed information about all podcasts,
+   the second one is to get all the podcasts classified as bds
 
 ### remark
 The process of inserting metadata into elasticsearch and files into mongodb

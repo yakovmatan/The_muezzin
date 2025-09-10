@@ -1,13 +1,14 @@
 import logging
 from configurations.elastic_configuration import ElasticConn
 from datetime import datetime
+from logger.config import *
 
 
 class Logger:
     _logger = None
 
     @classmethod
-    def get_logger(cls, name="logger_to_elastic", index="logs", level=logging.DEBUG):
+    def get_logger(cls, name="logger_to_elastic", index=INDEX_LOG, level=logging.DEBUG):
         if cls._logger:
             return cls._logger
         logger = logging.getLogger(name)

@@ -73,6 +73,7 @@ services:
       FILE_PATH: /app/podcasts
       TOPIC: podcasts
       ES_HOST: elasticsearch
+      INDEX_LOG: logs_publish_podcasts
     ports:
       - "8001:8001"
     volumes:
@@ -99,6 +100,7 @@ services:
       TOPIC_PUB: ids
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
+      INDEX_LOG: logs_processing
     ports:
       - "8003:8003"
     volumes:
@@ -123,11 +125,28 @@ services:
       TOPIC_SUB: ids
       INDEX_NAME: podcasts
       ES_HOST: elasticsearch
+      INDEX_LOG: logs_extract_text
     ports:
       - "8004:8004"
     depends_on:
       elasticsearch:
         condition: service_healthy
+
+  data_retrieval:
+    build:
+      context: .
+      dockerfile: ../pythonProject1/Dockerfile
+    container_name: data_retrieval
+    environment:
+      INDEX_NAME: podcasts
+      ES_HOST: elasticsearch
+      INDEX_LOG: logs_data_retrieval
+    ports:
+      - "8006:8006"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
 
 
 

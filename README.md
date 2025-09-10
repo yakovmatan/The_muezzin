@@ -39,6 +39,12 @@
      a podcast between 10-30 is considered to be at medium risk,
      and more than that already represents a high risk.
 
+### 4. data_retrieval
+1. Query builder for Elasticsearch
+2. Provides 2 endpoint the first to receive all podcasts from Elastic.
+   to get detailed information about all podcasts,
+   the second one is to get all the podcasts classified as bds
+
 ### remark
 The process of inserting metadata into elasticsearch and files into mongodb
 is done in a separate service from the transcription of the file,

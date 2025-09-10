@@ -1,5 +1,5 @@
 from configurations.elastic_configuration import ElasticConn
-from configurations.kafka_configuration import consumer, produce, send_event
+from configurations.kafka_consumer_configuration import Consumer
 from configurations.mongodb_configuration import DbConnection
 from extract_text.src.convert_bytes import ConvertBytes
 from extract_text.src.decoder import Decoder
@@ -13,12 +13,12 @@ from extract_text.src.fiels import *
 logger = Logger.get_logger()
 
 
-class Consumer:
+class ConsumerManager:
 
     def __init__(self, *topics_sub, index_name: str):
         self.index_name = index_name
         self.topic_sub = topics_sub
-        self.events = consumer(*topics_sub)
+        self.events = Consumer(*topics_sub).consumer
         self.mongo_conn = DbConnection()
         self.elastic_conn = ElasticConn().get_es()
         self.dal_mongo = DalMongo(self.mongo_conn)
@@ -56,7 +56,7 @@ class Consumer:
         logger.info(f"starting to consume from: {self.topic_sub}")
         for  messages in self.events:
             # get id from kafka
-            unique_id = Consumer.extract_id_from_message(messages.value)
+            unique_id = ConsumerManager.extract_id_from_message(messages.value)
             # Extract text
             text = self.__extract_text(unique_id)
             # Update in Elasticsearch

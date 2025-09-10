@@ -1,7 +1,7 @@
-from extract_text.src.consumer import Consumer
+from extract_text.src.consumer import ConsumerManager
 from extract_text.src.config import *
 
-consumer = Consumer(TOPIC_SUB, index_name=INDEX_NAME)
+consumer = ConsumerManager(TOPIC_SUB, index_name=INDEX_NAME)
 
 
 def main():

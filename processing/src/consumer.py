@@ -1,5 +1,6 @@
 from configurations.elastic_configuration import ElasticConn
-from configurations.kafka_configuration import consumer, produce, send_event
+from configurations.kafka_consumer_configuration import Consumer
+from configurations.kafka_producer_configuration import Producer
 from configurations.mongodb_configuration import DbConnection
 from logger.logger_to_elasic import Logger
 from dals.dal_elastic import DalElastic
@@ -9,14 +10,14 @@ from processing.src.unique_identifier import get_unique_identifier
 logger = Logger.get_logger()
 
 
-class Consumer:
+class ConsumerManager:
 
     def __init__(self, *topics_sub, topic_pub, index_name: str, file_field='path'):
         self.file_field = file_field
         self.index_name = index_name
         self.topic_pub = topic_pub
-        self.events = consumer(*topics_sub)
-        self.producer = produce()
+        self.events = Consumer(*topics_sub).consumer
+        self.producer = Producer()
         self.mongo_conn = DbConnection()
         self.elastic_conn = ElasticConn().get_es()
         self.dal_mongo = DalMongo(self.mongo_conn)
@@ -45,4 +46,4 @@ class Consumer:
             # Sending to mongo
             self.dal_mongo.insert_file(messages.value[self.file_field], unique_id)
             # Sending id to kafka
-            send_event(self.producer, self.topic_pub, {'id': unique_id})
+            self.producer.send_event(self.topic_pub, {'id': unique_id})
